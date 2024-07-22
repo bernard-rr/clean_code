@@ -1,0 +1,6 @@
+{
+    "Hello": {
+        "code": "```\nclass SnippetManager:\n    def __init__(self, data_file=\"snippets.json\"):\n        self.data_file = data_file\n        self.load_data()```\n",
+        "category": "py"
+    }
+}
