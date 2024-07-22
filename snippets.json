@@ -1,6 +1,15 @@
 {
     "Hello": {
-        "code": "```\nclass SnippetManager:\n    def __init__(self, data_file=\"snippets.json\"):\n        self.data_file = data_file\n        self.load_data()```\n",
-        "category": "py"
+        "code": "\u001b[34mdef\u001b[39;49;00m \u001b[32mcategorize_snippet\u001b[39;49;00m(\u001b[36mself\u001b[39;49;00m, title, category):\u001b[37m\u001b[39;49;00m\n        \u001b[34mif\u001b[39;49;00m title \u001b[35min\u001b[39;49;00m \u001b[36mself\u001b[39;49;00m.data:\u001b[37m\u001b[39;49;00m\n            \u001b[36mself\u001b[39;49;00m.data[title][\u001b[33m\"\u001b[39;49;00m\u001b[33mcategory\u001b[39;49;00m\u001b[33m\"\u001b[39;49;00m] = category\u001b[37m\u001b[39;49;00m\n            \u001b[36mself\u001b[39;49;00m.save_data()\u001b[37m\u001b[39;49;00m\n            \u001b[36mprint\u001b[39;49;00m(\u001b[33m\"\u001b[39;49;00m\u001b[33mSnippet category updated!\u001b[39;49;00m\u001b[33m\"\u001b[39;49;00m)\u001b[37m\u001b[39;49;00m\n        \u001b[34melse\u001b[39;49;00m:\u001b[37m\u001b[39;49;00m\n            \u001b[36mprint\u001b[39;49;00m(\u001b[33m\"\u001b[39;49;00m\u001b[33mSnippet not found.\u001b[39;49;00m\u001b[33m\"\u001b[39;49;00m)\u001b[37m\u001b[39;49;00m\n",
+        "category": "code",
+        "language": "Python"
+    },
+    "Yellow": {
+        "code": "```\ndef categorize_snippet(self, title, category):\n        if title in self.data:\n            self.data[title][\"category\"] = category\n            self.save_data()\n            print(\"Snippet category updated!\")\n        else:\n            print(\"Snippet not found.\")",
+        "category": "code"
+    },
+    "Testing": {
+        "code": "```\nif __name__ == \"__main__\":\n    main()\t",
+        "category": "testing"
     }
 }
