@@ -256,13 +256,11 @@ class SnippetManager:
                 snippets = json.load(f)
 
                 if not isinstance(snippets, list):
-                    raise ValueError(
-                        "JSON file should contain a list of snippets.")
+                    raise ValueError("JSON file should contain a list of snippets.")
 
                 for snippet in snippets:
                     if not isinstance(snippet, dict):
-                        raise ValueError(
-                            "Each snippet should be a dictionary.")
+                        raise ValueError("Each snippet should be a dictionary.")
 
                     title = snippet.get("title")
                     code = snippet.get("code")

@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Example Snippet 1",
+        "code": "print('Hello, World!')",
+        "language": "python"
+    },
+    {
+        "title": "Example Snippet 2",
+        "code": "console.log('Hello, World!');",
+        "language": "javascript"
+    }
+]
