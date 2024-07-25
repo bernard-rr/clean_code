@@ -1,5 +1,11 @@
 import json
 import os
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name, guess_lexer_for_filename
+from pygments.formatters import TerminalFormatter
+
+# Install required libraries if not present:
+# pip install autopep8 jsbeautifier
 
 
 class SnippetManager:
@@ -32,6 +38,11 @@ class SnippetManager:
         except FileNotFoundError:
             self.data = {}
 
+        # Ensure all snippets have a 'favorite' field
+        for snippet in self.data.values():
+            if 'favorite' not in snippet:
+                snippet['favorite'] = False
+
     def save_data(self):
         """
         Save the current snippet data to the data file.
@@ -39,7 +50,27 @@ class SnippetManager:
         with open(self.data_file, "w") as f:
             json.dump(self.data, f, indent=4)
 
-    def add_snippet(self, title, code, category):
+    def format_code(self, code, language):
+        """
+        Format code based on the language.
+
+        Args:
+            code (str): The code snippet.
+            language (str): The programming language of the snippet.
+
+        Returns:
+            str: The formatted code.
+        """
+        if language == "python" or language == "cpp":
+            import autopep8
+            code = autopep8.fix_code(code)
+        elif language == "js" or language == "javascript":
+            import jsbeautifier
+            code = jsbeautifier.beautify(code)
+
+        return code
+
+    def add_snippet(self, title, code, category, language):
         """
         Add a new snippet to the collection.
 
@@ -55,6 +86,20 @@ class SnippetManager:
             print("Snippet added successfully!")
         else:
             print("Snippet with this title already exists.")
+
+        code = self.format_code(code, language)
+
+        highlighted_code = highlight(
+            code.replace("```", ""),
+            get_lexer_by_name(language),
+            TerminalFormatter(),
+        )
+        self.data[title] = {
+            "code": highlighted_code,
+            "category": category,
+            "language": language,
+            "favorite": False  # Add favorite field, initially False
+        }
 
     def categorize_snippet(self, title, category):
         """
@@ -78,22 +123,22 @@ class SnippetManager:
         Args:
             query (str): The search query.
         """
-        resultCount = 0
+        result_count = 0
         print("Search results:")
         for title, snippet in self.data.items():
             if (
                 query.lower() in title.lower()
                 or query.lower() in snippet["code"].lower()
             ):
-                resultCount += 1
-                print(f"Snippet {resultCount}:")
+                result_count += 1
+                print(f"Snippet {result_count}:")
                 print(
                     f"- **{title}** ({snippet.get('category', 'Uncategorized')})\n{snippet['code']}\n"
                 )
-        if resultCount == 0:
+        if result_count == 0:
             print("No snippets found matching your query.")
         else:
-            print(f"Found {resultCount} Results")
+            print(f"Found {result_count} results")
 
     def show_all_snippets(self):
         """
@@ -106,6 +151,38 @@ class SnippetManager:
                 )
         else:
             print("No snippets saved yet.")
+
+    def toggle_favorite(self, title):
+        """
+        Toggle the favorite status of a snippet.
+
+        Args:
+            title (str): The title of the snippet.
+        """
+        if title in self.data:
+            self.data[title]["favorite"] = not self.data[title]["favorite"]
+            self.save_data()
+            print(
+                f"Snippet '{title}' marked as favorite"
+                if self.data[title]["favorite"]
+                else f"Snippet '{title}' removed from favorites"
+            )
+        else:
+            print("Snippet not found.")
+
+    def show_favorites(self):
+        """
+        Display all favorite snippets.
+        """
+        favorite_count = 0
+        for title, snippet in self.data.items():
+            if snippet["favorite"]:
+                favorite_count += 1
+                print(
+                    f"- **{title}** ({snippet.get('category', 'Uncategorized')})\n{snippet['code']}\n"
+                )
+        if favorite_count == 0:
+            print("No favorite snippets found.")
 
 
 def main():
@@ -122,6 +199,8 @@ def main():
         print("3. Search snippets")
         print("4. Show all snippets")
         print("5. Exit")
+        print("6. Toggle favorite")
+        print("7. Show favorite snippets")
 
         choice = input("> ")
 
@@ -138,8 +217,9 @@ def main():
 
             code = "\n".join(code_lines)
 
+            language = input("Language: ")
             category = input("Category (optional): ")
-            manager.add_snippet(title, code, category)
+            manager.add_snippet(title, code, category, language)
         elif choice == "2":
             title = input("Title of snippet to categorize: ")
             category = input("New category: ")
@@ -151,6 +231,11 @@ def main():
             manager.show_all_snippets()
         elif choice == "5":
             break
+        elif choice == "6":
+            title = input("Title of snippet to toggle favorite: ")
+            manager.toggle_favorite(title)
+        elif choice == "7":
+            manager.show_favorites()
         else:
             print("Invalid choice.")
 

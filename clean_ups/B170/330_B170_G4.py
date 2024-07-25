@@ -3,6 +3,13 @@ import os
 
 
 class SnippetManager:
+    """
+    A class to manage code snippets.
+
+    Attributes:
+        data_file (str): The file where snippets are stored.
+        data (dict): A dictionary to hold the snippet data.
+    """
     def __init__(self, data_file="snippets.json"):
         self.data_file = data_file
         self.load_data()

@@ -47,5 +47,11 @@
         "language": "javascript",
         "favorite": false,
         "created_at": "2024-07-23"
+    },
+    "Hi": {
+        "code": "\u001b[34mif\u001b[39;49;00m \u001b[31m__name__\u001b[39;49;00m == \u001b[33m\"\u001b[39;49;00m\u001b[33m__main__\u001b[39;49;00m\u001b[33m\"\u001b[39;49;00m:\u001b[37m\u001b[39;49;00m\n    main()\u001b[37m\u001b[39;49;00m\n",
+        "category": "j",
+        "language": "python",
+        "favorite": true
     }
 }
