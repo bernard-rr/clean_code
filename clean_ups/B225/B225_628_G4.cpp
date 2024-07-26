@@ -46,26 +46,14 @@ bool isCreditCardValid(const string& cardNumber) {
 int main() {
     string cardNumber;
 
-    while (true) {
-        cout << "Enter credit card number (or 'exit' to quit): ";
-        cin >> cardNumber;
+    cout << "Enter credit card number: ";
+    cin >> cardNumber;
 
-        if (cardNumber == "exit") {
-            break;
-        }
-
-        // Check if the input consists only of digits
-        if (!all_of(cardNumber.begin(), cardNumber.end(), ::isdigit)) {
-            cout << "Invalid input: Please enter digits only.\n";
-            continue;
-        }
-
-        if (isCreditCardValid(cardNumber)) {
-            cout << "Credit card is valid.\n";
-        } else {
-            cout << "Credit card is not valid.\n";
-        }
+    if (isCreditCardValid(cardNumber)) {
+        cout << "Credit card is valid.\n";
+    } else {
+        cout << "Credit card is not valid.\n";
     }
 
-    return 0;   
+    return 0;
 }

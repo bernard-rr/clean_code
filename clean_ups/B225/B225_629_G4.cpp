@@ -4,6 +4,32 @@
 
 using namespace std;
 
+// Function to check card type based on prefix and length
+string getCardType(const string& cardNumber) {
+    int prefix = stoi(cardNumber.substr(0, 2));
+    int length = cardNumber.length();
+
+    if (prefix == 34 || prefix == 37) {
+        if (length == 15) {
+            return "American Express";
+        }
+    } else if (prefix >= 51 && prefix <= 55) {
+        if (length == 16) {
+            return "MasterCard";
+        }
+    } else if (prefix == 4) {
+        if (length == 13 || length == 16) {
+            return "Visa";
+        }
+    } else if (prefix == 60) {
+        if (length >= 16 && length <= 19) {
+            return "Discover";
+        }
+    }
+
+    return "Unknown";
+}
+
 // Function to check if a credit card number is valid using the Luhn algorithm
 bool isCreditCardValid(const string& cardNumber) {
     // Remove spaces and non-digit characters
@@ -46,26 +72,15 @@ bool isCreditCardValid(const string& cardNumber) {
 int main() {
     string cardNumber;
 
-    while (true) {
-        cout << "Enter credit card number (or 'exit' to quit): ";
-        cin >> cardNumber;
+    cout << "Enter credit card number: ";
+    cin >> cardNumber;
 
-        if (cardNumber == "exit") {
-            break;
-        }
-
-        // Check if the input consists only of digits
-        if (!all_of(cardNumber.begin(), cardNumber.end(), ::isdigit)) {
-            cout << "Invalid input: Please enter digits only.\n";
-            continue;
-        }
-
-        if (isCreditCardValid(cardNumber)) {
-            cout << "Credit card is valid.\n";
-        } else {
-            cout << "Credit card is not valid.\n";
-        }
+    if (isCreditCardValid(cardNumber)) {
+        string cardType = getCardType(cardNumber);
+        cout << "Credit card is valid (" << cardType << ")\n";
+    } else {
+        cout << "Credit card is not valid.\n";
     }
 
-    return 0;   
+    return 0;
 }
